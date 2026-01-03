@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ATS Tailor HYBRID - LazyApply Speed + Full 5.0 Features",
+  "name": "ATS Tailor HYBRID v1.0 - LazyApply 3X Speed (175ms) + Unique CV Per Job",
   "version": "1.0.0",
-  "description": "HYBRID: 4.0 LazyApply speed (≤350ms) + ALL 5.0 features: Advanced keyword extraction, High/Medium priority matching, intelligent tailoring, CV/Cover optimization, 95-100% match display, Technical Proficiencies section. Supports Greenhouse, Workday, SmartRecruiters, Bullhorn, Teamtailor, Workable, ICIMS, Oracle Cloud.",
+  "description": "HYBRID v1.0: LazyApply 3X speed (≤175ms) + Unique CV per job (preserves companies/roles/dates, modifies bullet phrasing) + ALL 5.0 features. ATS-perfect PDF: Arial 10.5pt, 0.75\" margins. Supports Greenhouse, Workday, SmartRecruiters, Bullhorn, Teamtailor, Workable, ICIMS, Oracle Cloud.",
   "permissions": [
     "storage",
     "activeTab",
@@ -53,6 +53,7 @@
         "universal-jd-parser.js",
         "reliable-extractor.js",
         "universal-keyword-strategy.js",
+        "unique-cv-engine.js",
         "tailor-universal.js",
         "validation-engine.js",
         "dynamic-score.js",
@@ -85,6 +86,7 @@
         "universal-jd-parser.js",
         "reliable-extractor.js",
         "universal-keyword-strategy.js",
+        "unique-cv-engine.js",
         "tailor-universal.js",
         "validation-engine.js",
         "dynamic-score.js",
