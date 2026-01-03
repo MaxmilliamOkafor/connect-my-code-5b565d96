@@ -356,23 +356,44 @@
       }
       yPos += 10;
 
-      // PROFESSIONAL SUMMARY
+      // PROFESSIONAL SUMMARY - Header BOLD, content NORMAL
       if (sections.summary) {
         addSectionHeader('PROFESSIONAL SUMMARY');
+        // CRITICAL FIX: Summary content is NEVER bold
+        doc.setFont(font, 'normal');
         addText(sections.summary, false, false, fontSize.body);
       }
 
-      // EXPERIENCE
+      // EXPERIENCE - FIXED FORMATTING
+      // BOLD: Company names only (e.g., "Meta | Senior Software Engineer")
+      // NORMAL: Dates, locations, bullet points, all other content
       if (sections.experience) {
         addSectionHeader('EXPERIENCE');
         const expLines = sections.experience.split('\n');
         expLines.forEach(line => {
           const trimmed = line.trim();
-          if (trimmed.startsWith('-') || trimmed.startsWith('•')) {
+          if (!trimmed) return;
+          
+          // Bullet points - ALWAYS normal weight
+          if (trimmed.startsWith('-') || trimmed.startsWith('•') || trimmed.startsWith('*')) {
+            doc.setFont(font, 'normal');
             addText(trimmed, false, false, fontSize.body);
-          } else if (trimmed.includes('|') || /^\d{4}/.test(trimmed) || /[A-Z]{2,}/.test(trimmed.substring(0, 30))) {
+          }
+          // Company/Role line - ONLY bold if it looks like "Company | Role" or "Company Name"
+          // Pattern: Contains pipe OR is a company name (short, no bullet, not a date line)
+          else if (trimmed.includes('|') && !trimmed.match(/^\d{4}/)) {
+            // This is a "Company | Role" line - make it BOLD
+            doc.setFont(font, 'bold');
             addText(trimmed, true, false, fontSize.body);
-          } else if (trimmed) {
+          }
+          // Date/Location lines - NORMAL (e.g., "2023-01 - Present" or "London, UK")
+          else if (trimmed.match(/^\d{4}/) || trimmed.match(/^[A-Z][a-z]+,\s*[A-Z]/)) {
+            doc.setFont(font, 'normal');
+            addText(trimmed, false, false, fontSize.body);
+          }
+          // Everything else - NORMAL
+          else {
+            doc.setFont(font, 'normal');
             addText(trimmed, false, false, fontSize.body);
           }
         });
