@@ -42,56 +42,23 @@
   const startTime = Date.now();
   const currentJobUrl = window.location.href;
 
-  // ============ STATUS OVERLAY (LAZYAPPLY 3X STYLE - 175ms) ============
+  // ============ STATUS TRACKING (NO GREEN BOX - REMOVED) ============
+  // GREEN BOX REMOVED - User hates it. Only use banner for status updates.
   function createStatusOverlay() {
-    if (document.getElementById('ats-status')) return;
-
-    const overlay = document.createElement('div');
-    overlay.id = 'ats-status';
-    overlay.innerHTML = `
-      <style>
-        #ats-status {
-          position: fixed;
-          top: 10px;
-          right: 10px;
-          z-index: 100000;
-          background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
-          padding: 12px 16px;
-          border-radius: 8px;
-          font: bold 12px monospace;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-          border: 2px solid #004d26;
-          animation: pulse 1s ease-in-out infinite;
-        }
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 4px 12px rgba(0,255,136,0.4); }
-          50% { box-shadow: 0 4px 20px rgba(0,255,136,0.8); }
-        }
-        #ats-status .title { font-size: 14px; margin-bottom: 5px; color: #000; }
-        #ats-status .stats { display: flex; gap: 12px; color: #000; }
-      </style>
-      <div class="title">⚡ ATS TAILOR 3X SPEED 175ms</div>
-      <div class="stats">
-        <span>⏱️ <span id="ats-timer">0ms</span></span>
-        <span>📄 CV: <span id="ats-cv-status">⏳</span></span>
-        <span>📝 Cover: <span id="ats-cover-status">⏳</span></span>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-
-    // Update timer with milliseconds precision for 175ms target
-    const timerStart = performance.now();
-    const timerInterval = setInterval(() => {
-      const elapsed = Math.floor(performance.now() - timerStart);
-      const timerEl = document.getElementById('ats-timer');
-      if (timerEl) timerEl.textContent = elapsed + 'ms';
-      if (elapsed > 5000) clearInterval(timerInterval); // Stop after 5s
-    }, 50);
+    // DISABLED - No green overlay. Just use banner.
+    return;
   }
 
   function updateStatus(type, status) {
-    const el = document.getElementById(`ats-${type}-status`);
-    if (el) el.textContent = status;
+    // Update banner instead of overlay
+    const banner = document.getElementById('ats-banner-status');
+    if (banner) {
+      if (type === 'cv' && status === '✅') {
+        banner.textContent = 'CV attached ✅';
+      } else if (type === 'cover' && status === '✅') {
+        banner.textContent = 'CV + Cover Letter attached ✅';
+      }
+    }
   }
 
   // ============ STATUS BANNER ============
@@ -957,45 +924,74 @@
     forceCoverReplace();
   }
 
-  // ============ AUTO-CLICK BUTTON TRIGGER (50ms for LazyApply 3X - 175ms pipeline) ============
+  // ============ AUTO-CLICK BUTTON TRIGGER (VISIBLE - PHYSICAL CLICK) ============
   function autoClickExtractButton() {
     const buttonStart = performance.now();
     
-    // Button selectors for "Extract & Apply keywords to CV"
-    const buttonSelectors = [
-      'button:contains("Extract & Apply keywords to CV")',
-      'button[data-testid*="extract"]',
-      '.extract-keywords',
-      '[data-action="extract"]',
-      'button.primary-btn',
-      'button.active'
-    ];
-
+    // Find the "Extract & Apply keywords to CV" button
     let btn = null;
-    for (const sel of buttonSelectors) {
-      try {
-        btn = document.querySelector(sel);
-        if (btn) break;
-      } catch (e) {
-        // :contains not supported, use text match
-        document.querySelectorAll('button').forEach(b => {
-          if (b.textContent?.includes('Extract') || b.textContent?.includes('Apply keywords')) {
-            btn = b;
-          }
-        });
+    
+    // Method 1: Text-based search (most reliable)
+    document.querySelectorAll('button').forEach(b => {
+      const text = b.textContent?.toLowerCase() || '';
+      if (text.includes('extract') && text.includes('apply')) {
+        btn = b;
+      } else if (text.includes('extract') && text.includes('keyword')) {
+        btn = b;
+      }
+    });
+    
+    // Method 2: CSS selectors
+    if (!btn) {
+      const selectors = [
+        '.extract-keywords',
+        '[data-testid*="extract"]',
+        '[data-action="extract"]',
+        'button[class*="extract"]'
+      ];
+      for (const sel of selectors) {
+        try {
+          btn = document.querySelector(sel);
+          if (btn) break;
+        } catch (e) {}
       }
     }
 
     if (btn) {
-      btn.click();
-      console.log(`[ATS Tailor] ⚡ Auto-clicked extract button in ${(performance.now() - buttonStart).toFixed(0)}ms`);
+      // VISIBLE CLICK: Add visual feedback BEFORE clicking
+      const originalBg = btn.style.background;
+      const originalTransform = btn.style.transform;
+      const originalBoxShadow = btn.style.boxShadow;
       
-      // Double-click backup at 30ms
+      // Visual press effect (button depress)
+      btn.style.transition = 'all 0.1s ease';
+      btn.style.transform = 'scale(0.95)';
+      btn.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.3)';
+      btn.style.background = '#0066cc';
+      
+      console.log(`[ATS Tailor] ⚡ PHYSICAL CLICK: Button found, applying visual press...`);
+      
+      // Perform the actual click after visual feedback
       setTimeout(() => {
-        if (!document.querySelector('.loading, [data-loading], .spinner')) {
-          btn.click();
-        }
-      }, 30);
+        btn.click();
+        console.log(`[ATS Tailor] ⚡ Button CLICKED! (${(performance.now() - buttonStart).toFixed(0)}ms)`);
+        
+        // Show loading state on button
+        const originalText = btn.textContent;
+        btn.textContent = '⏳ Processing...';
+        btn.disabled = true;
+        
+        // Restore button after 2s
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          btn.style.transform = originalTransform;
+          btn.style.boxShadow = originalBoxShadow;
+          btn.style.background = originalBg;
+        }, 2000);
+      }, 100); // 100ms delay for visible depress effect
+    } else {
+      console.log('[ATS Tailor] No extract button found on page');
     }
   }
 
