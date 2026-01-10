@@ -1,3 +1,100 @@
 {
-"update_url": "https://clients2.google.com/service/update2/crx",
-"manifest_version":3,"name":"EarnBetter - AI Autofill for job applications","description":"Autofill job applications and generate AI resumes, cover letters and interview cheat sheets instantly","version":"0.25.1001","icons":{"16":"icon-16.png","32":"icon-32.png","48":"icon-48.png","128":"icon-128.png","1024":"icon-1024.png"},"permissions":["tabs","cookies","storage"],"host_permissions":["https://earnbetter.com/*"],"externally_connectable":{"matches":["https://earnbetter.com/*"]},"action":{},"key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwfrLSX8mSZqZiJjLa+0TbyqFwC++Z+PtKP1yXCQX82HsmVegSXCPNJY9TcjHF/RA395Oekwf2ActCh0da4aqolGErQcIHceKuJXPsL+YtaRckOXbHD+ATgFt+RN2TUxJg6yCJMtjaUEbwP6THdlbGYnWvY0ZvRH59hjMjsmn2RRa55apubUMIAQpr5RCK1EzV+2UFMxgW02D7mxreQ2vwS5JqEF9pd+G0Ks8oAztKtjctcT45hpK4BZXJjkSB/j9oDsMZ34X0OLjfBVDN+SAw9nnN9p3cMV6Fla94WlpbKa3QpYII7qXpD8CPVqCs6U47bU79MOk5BBoGbLvw+qsgwIDAQAB","web_accessible_resources":[{"resources":["fonts/*"],"matches":["<all_urls>"]},{"resources":["content-scripts/content.css"],"matches":["<all_urls>"]}],"version_name":"0.25.1001-21302","background":{"type":"module","service_worker":"background.js"},"content_scripts":[{"matches":["<all_urls>"],"js":["content-scripts/content.js"]}]}
+  "manifest_version": 3,
+  "name": "EarnBetter - AI Autofill for job applications (Extended)",
+  "description": "Autofill job applications and generate AI resumes, cover letters and interview cheat sheets instantly. Extended ATS support for UK/Ireland users.",
+  "version": "0.26.0",
+  "icons": {
+    "16": "icon-16.png",
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png",
+    "1024": "icon-1024.png"
+  },
+  "permissions": [
+    "tabs",
+    "cookies",
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://earnbetter.com/*",
+    "https://*.workday.com/*",
+    "https://*.myworkdayjobs.com/*",
+    "https://*.greenhouse.io/*",
+    "https://*.taleo.net/*",
+    "https://*.smartrecruiters.com/*",
+    "https://*.icims.com/*",
+    "https://*.successfactors.com/*",
+    "https://*.jobvite.com/*",
+    "https://*.teamtailor.com/*",
+    "https://*.bamboohr.com/*",
+    "https://*.workable.com/*",
+    "https://*.recruitee.com/*",
+    "https://*.breezy.hr/*",
+    "https://*.jazz.co/*",
+    "https://*.ultipro.com/*",
+    "https://*.paylocity.com/*",
+    "https://*.adp.com/*",
+    "https://*.oracle.com/*",
+    "https://*.oraclecloud.com/*",
+    "https://*.linkedin.com/*",
+    "https://*.indeed.com/*",
+    "https://*.glassdoor.com/*",
+    "https://*.monster.com/*",
+    "https://*.ziprecruiter.com/*",
+    "https://*.careerbuilder.com/*",
+    "https://*.dice.com/*",
+    "https://*.reed.co.uk/*",
+    "https://*.totaljobs.com/*",
+    "https://*.cvlibrary.co.uk/*",
+    "https://*.jobs.ie/*",
+    "https://*.irishjobs.ie/*",
+    "https://*.efinancialcareers.com/*",
+    "https://*.seek.com.au/*",
+    "https://*.naukri.com/*",
+    "https://*.wellfound.com/*",
+    "https://*.angel.co/*",
+    "https://*.builtin.com/*",
+    "https://*.usajobs.gov/*",
+    "https://*.otta.com/*",
+    "https://*.handshake.com/*",
+    "https://*.joinhandshake.com/*",
+    "https://*.remoteok.com/*",
+    "https://*.weworkremotely.com/*",
+    "https://*.flexjobs.com/*",
+    "<all_urls>"
+  ],
+  "externally_connectable": {
+    "matches": ["https://earnbetter.com/*"]
+  },
+  "action": {},
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwfrLSX8mSZqZiJjLa+0TbyqFwC++Z+PtKP1yXCQX82HsmVegSXCPNJY9TcjHF/RA395Oekwf2ActCh0da4aqolGErQcIHceKuJXPsL+YtaRckOXbHD+ATgFt+RN2TUxJg6yCJMtjaUEbwP6THdlbGYnWvY0ZvRH59hjMjsmn2RRa55apubUMIAQpr5RCK1EzV+2UFMxgW02D7mxreQ2vwS5JqEF9pd+G0Ks8oAztKtjctcT45hpK4BZXJjkSB/j9oDsMZ34X0OLjfBVDN+SAw9nnN9p3cMV6Fla94WlpbKa3QpYII7qXpD8CPVqCs6U47bU79MOk5BBoGbLvw+qsgwIDAQAB",
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/*"],
+      "matches": ["<all_urls>"]
+    },
+    {
+      "resources": ["content-scripts/content.css"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "version_name": "0.26.0-extended",
+  "background": {
+    "type": "module",
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "content-scripts/ats-registry.js",
+        "content-scripts/region-bypass.js",
+        "content-scripts/usage-bypass.js",
+        "content-scripts/autofill-engine.js",
+        "content-scripts/content.js"
+      ],
+      "css": ["content-scripts/content.css"]
+    }
+  ]
+}
